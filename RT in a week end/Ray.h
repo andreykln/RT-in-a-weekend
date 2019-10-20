@@ -4,8 +4,8 @@
 class ray
 {
 public:
-	vec3 A;
-	vec3 B;
+	vec3 A; //origin
+	vec3 B; //direction
 
 	ray() {}
 	ray(const vec3& a, const vec3& b) { A = a; B = b; }
