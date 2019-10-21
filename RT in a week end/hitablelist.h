@@ -1,12 +1,13 @@
 #ifndef HITABLELIST_H
 #define  HITABLELIST_H
 #include "Hitable.h"
+//#include <iostream>
 
 class hitable_list : public hitable
 {
 public:
-	hitable** list;
-	int list_size;
+	hitable** list{};
+	int list_size{};
 	hitable_list() {};
 	hitable_list(hitable** l, int n) { list = l; list_size = n; }
 	virtual bool hit(const ray& r, float tmin, float tmax, hit_record& rec) const override;
@@ -16,6 +17,7 @@ public:
 
 bool hitable_list::hit(const ray& r, float t_min, float t_max, hit_record& rec) const
 {
+	//std::cout << "Hit in hitable list has been called\n";
 	hit_record temp_rec;
 	bool hit_anything = false;
 	double closest_so_far = t_max;
