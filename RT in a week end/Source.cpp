@@ -26,11 +26,10 @@ int main()
 	vec3 horizontal(4.0, 0.0, 0.0);
 	vec3 vertical(0.0, 2.0, 0.0);
 	vec3 origin(0.0, 0.0, 0.0);
-	hitable *list[3];
+	hitable *list[2];
 	list[0] = new sphere(vec3(0, 0, -1), 0.5);
 	list[1] = new sphere(vec3(0, -100.5, -1), 100);
-	list[2] = new sphere(vec3(1, -0.5, -1), 0.3);
-	hitable* world = new hitable_list(list, 3);
+	hitable* world = new hitable_list(list, 2);
 	unsigned int iterations{};
 
 	for (int j = ny - 1; j >= 0; j--)
