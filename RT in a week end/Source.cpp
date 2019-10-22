@@ -4,55 +4,62 @@
 
 #include <fstream>
 #include <iostream>
+#include <random>
 #include "vec3.h"
 #include "Ray.h"
 #include "Hitable.h"
 #include "hitablelist.h"
 #include "sphere.h"
-
+#include "Camera.h"
+#include <ctime>
 vec3 color(const ray& r, hitable* world);
-//float hit_sphere(const vec3& center, float radius, const ray& r);
 
+inline double random_double() {
+	return rand() / (RAND_MAX + 1.0);
+}
 
 int main()
 {
+	/*std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_real_distribution<> dis(0, 1);//uniform distribution between 0 and 1*/
+	std::srand(static_cast<unsigned>(std::time(0)));
+
 	std::ofstream myfile;
 	myfile.open("spheres.ppm");
-	int nx = 400;
-	int ny = 200;
+	int nx = 200;
+	int ny = 100;
+	int ns = 100;
 	myfile << "P3\n" << nx << " " << ny << "\n255\n";
 
-	vec3 lower_left_corner(-2.0, -1.0, -1.0);
-	vec3 horizontal(4.0, 0.0, 0.0);
-	vec3 vertical(0.0, 2.0, 0.0);
-	vec3 origin(0.0, 0.0, 0.0);
 	hitable *list[2];
 	list[0] = new sphere(vec3(0, 0, -1), 0.5);
 	list[1] = new sphere(vec3(1, -100.5, -1), 100);
-
 	hitable* world = new hitable_list(list, 2);
-	unsigned int iterations{};
+	camera cam;
 
 	for (int j = ny - 1; j >= 0; j--)
 	{
 		for (int i = 0; i < nx; i++)
 		{
-			float u = float(i) / float(nx);
-			float v = float(j) / float(ny);
-			ray r(origin, lower_left_corner + u * horizontal + v * vertical);
+			vec3 col(0, 0, 0);
+			for (int s = 0 ; s < ns ; s++)
+			{
+				float u = float(i /*+ random_double()*/) / float(nx);
+				float v = float(j /*+ random_double()*/) / float(ny);
+				ray r = cam.get_ray(u, v);
+				vec3 p = r.point_at_parameter(2.0);
+				col += color(r, world);
+			}
 
-			vec3 p = r.point_at_parameter(2.0);
-			vec3 col = color(r,world);
-
+			col /= float(ns);
 			int ir = int(255.99 * col[0]);
 			int ig = int(255.99 * col[1]);
 			int ib = int(255.99 * col[2]);
 			myfile << ir << " " << ig << " " << ib << "\n";
-			iterations++;
 		}
 	}
 	myfile.close();
-	std::cout << iterations;
 }
 
 vec3 color(const ray& r, hitable *world)
