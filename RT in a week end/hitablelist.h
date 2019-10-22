@@ -17,7 +17,6 @@ public:
 
 bool hitable_list::hit(const ray& r, float t_min, float t_max, hit_record& rec) const
 {
-	//std::cout << "Hit in hitable list has been called\n";
 	hit_record temp_rec;
 	bool hit_anything = false;
 	double closest_so_far = t_max;
