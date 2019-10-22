@@ -45,8 +45,8 @@ int main()
 			vec3 col(0, 0, 0);
 			for (int s = 0 ; s < ns ; s++)
 			{
-				float u = float(i /*+ random_double()*/) / float(nx);
-				float v = float(j /*+ random_double()*/) / float(ny);
+				float u = float(i + random_double()) / float(nx);
+				float v = float(j + random_double()) / float(ny);
 				ray r = cam.get_ray(u, v);
 				vec3 p = r.point_at_parameter(2.0);
 				col += color(r, world);
